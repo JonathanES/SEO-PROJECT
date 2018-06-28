@@ -1,0 +1,22 @@
+{
+  "name": "seo-project",
+  "version": "1.0.0",
+  "description": "Aide à la rédaction",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jojo020595/SEO-PROJECT.git"
+  },
+  "author": "Jonathan ESPIARD, Franck THANG, Mickael AU",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jojo020595/SEO-PROJECT/issues"
+  },
+  "homepage": "https://github.com/jojo020595/SEO-PROJECT#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
