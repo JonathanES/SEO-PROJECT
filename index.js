@@ -1,5 +1,4 @@
 const fs = require('fs');
-const math = require('mathjs')
 
 function generateNgrams(N, words) {
     return new Promise((resolve, reject) => {
