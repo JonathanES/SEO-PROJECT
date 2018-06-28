@@ -20,6 +20,23 @@ function generateNgrams(N, words) {
     });
 }
 
+/**
+    * @param doc  list of strings
+    * @param term String represents a term
+    * @return term frequency of term in document
+    */
+function tf(doc, term) {
+    return new Promise((resolve, reject) => {
+        let result = 0;
+        doc.forEach(word => {
+            if (word === term)
+                result++;
+        })
+        result /= doc.length;
+        resolve(result);
+    });
+}
+
 
 /**
  * @param docs list of list of strings represents the dataset
@@ -31,14 +48,16 @@ function idf(docs, term) {
         let n = 0;
         let count = 0;
         docs.forEach(doc => {
-            doc.forEach(word => {
-                if (term === word)
+            for (word in doc) {
+                if (term === doc[word]) {
                     n++;
-            });
+                    break;
+                }
+            }
             count++;
         });
         if (count === docs.length)
-            resolve(math.log((docs.length / n)));
+            resolve(Math.log((docs.length / n)));
     });
 }
 
@@ -73,13 +92,12 @@ function getDocuments() {
 function tfIdf() {
     const promise = getDocuments();
     promise.then(documents => {
-        const counts = {};
-        documents[0].forEach(x => { counts[x] = ((counts[x] || 0) + 1) / documents[0].length; });
-        // console.log("count ngram " + JSON.stringify(counts));
+        console.log(documents[0]);
         const idfResult = idf(documents, "ipsum");
-        idfResult.then(res => {
-            console.log(counts.ipsum * res);
-        })
+        const tfResult = tf(documents[0], "ipsum");
+        Promise.all([tfResult, idfResult]).then(values => {
+            console.log(values[0] * values[1]);
+        });
     });
 }
 tfIdf();
