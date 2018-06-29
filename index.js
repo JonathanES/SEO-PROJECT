@@ -1,4 +1,5 @@
 const fs = require('fs');
+const stdin = process.openStdin();
 
 function generateNgrams(N, words) {
     return new Promise((resolve, reject) => {
@@ -47,12 +48,11 @@ function idf(docs, term) {
         let n = 0;
         let count = 0;
         docs.forEach(doc => {
-            for (word in doc) {
+            for (word in doc)
                 if (term === doc[word]) {
                     n++;
                     break;
                 }
-            }
             count++;
         });
         if (count === docs.length)
@@ -60,8 +60,24 @@ function idf(docs, term) {
     });
 }
 
+function readInput() {
+    return new Promise((resolve, reject) => {
+        console.log("Please enter a value for the n-grams (value between 1 and 5) : ")
+        stdin.addListener("data", function (d) {
+            const val = parseInt(d.toString().trim());
+            console.log("you entered: [" +
+            d.toString().trim() + "] which is in number " + val);
+            if (val) {
+                resolve(val);
+                stdin.pause();
+            }
+            else
+                readInput();
+        });
+    });
+}
 
-function getDocuments() {
+function getDocuments(input) {
     return new Promise((resolve, reject) => {
         const files = fs.readdirSync(__dirname + '/files');
         const documents = [];
@@ -69,7 +85,7 @@ function getDocuments() {
             fs.readFile(__dirname + '/files/' + element, "utf8", (err, data) => {
                 if (err) throw err;
                 // const N = [1, 2, 3, 4, 5]
-                const N = [1];
+                const N = [input];
                 data = (data).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()@?+'’]/g, " ");
                 data = (data).replace(/\s{2,}/g, " ");
                 let words = data.split(" ");
@@ -88,29 +104,32 @@ function getDocuments() {
 }
 
 function tfIdf() {
-    const promise = getDocuments();
-    promise.then(documents => {
-        const arrayOfTfidfResult = [];
-        let n = 0;
-        documents.forEach(doc => {
-            let x = 0;
-            let tfidfResult = new Map();
-            doc.forEach(word => {
-                const idfResult = idf(documents, word);
-                const tfResult = tf(doc, word);
-                Promise.all([tfResult, idfResult]).then(values => {
-                    tfidfResult.set(word, values[0] * values[1]);
-                    x++;
-                    if (x === doc.length){
-                        arrayOfTfidfResult.push(tfidfResult);
-                        n++;
-                    }
-                    if (n === documents.length)
-                        console.log(arrayOfTfidfResult);
+    const input = readInput();
+    input.then(inputValue => {
+        const promise = getDocuments(inputValue);
+        promise.then(documents => {
+            const arrayOfTfidfResult = [];
+            let n = 0;
+            documents.forEach(doc => {
+                let x = 0;
+                let tfidfResult = new Map();
+                doc.forEach(word => {
+                    const idfResult = idf(documents, word);
+                    const tfResult = tf(doc, word);
+                    Promise.all([tfResult, idfResult]).then(values => {
+                        tfidfResult.set(word, values[0] * values[1]);
+                        x++;
+                        if (x === doc.length) {
+                            arrayOfTfidfResult.push(tfidfResult);
+                            n++;
+                        }
+                        if (n === documents.length)
+                            console.log(arrayOfTfidfResult);
+                    });
                 });
             });
         });
-    });
+    })
 }
 tfIdf();
 
