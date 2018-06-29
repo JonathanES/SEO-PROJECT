@@ -56,7 +56,7 @@ function idf(docs, term) {
             count++;
         });
         if (count === docs.length)
-            resolve(Math.log((docs.length / n)));
+            resolve(Math.log10((docs.length / n)));
     });
 }
 
@@ -70,11 +70,10 @@ function getDocuments() {
                 if (err) throw err;
                 // const N = [1, 2, 3, 4, 5]
                 const N = [1];
-                const wordsRegexp = /[a-zA-Z']+/g;
-                const words = [];
-                data.replace(wordsRegexp, function (word) {
-                    words.push(word);
-                });
+                data = (data).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()@?+'’]/g, " ");
+                data = (data).replace(/\s{2,}/g, " ");
+                let words = data.split(" ");
+                words = words.filter(elt => elt.length > 0)
                 N.forEach(element => {
                     const promise = generateNgrams(element, words);
                     promise.then(ngramList => {
@@ -91,16 +90,22 @@ function getDocuments() {
 function tfIdf() {
     const promise = getDocuments();
     promise.then(documents => {
+        let tfidfResult = new Map();
+        let n = 0;
         documents.forEach(doc => {
-            console.log("the document that we are gonna analyze " + doc);
+            let x = 0;
             doc.forEach(word => {
                 const idfResult = idf(documents, word);
                 const tfResult = tf(doc, word);
                 Promise.all([tfResult, idfResult]).then(values => {
-                    console.log(word + " " + values[0] * values[1]);
+                    tfidfResult.set(word, values[0] * values[1]);
+                    x++;
+                    if (x === doc.length)
+                        n++;
+                    if (n === documents.length)
+                        console.log(tfidfResult);
                 });
             });
-            console.log("");
         });
     });
 }
