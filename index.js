@@ -90,20 +90,23 @@ function getDocuments() {
 function tfIdf() {
     const promise = getDocuments();
     promise.then(documents => {
-        let tfidfResult = new Map();
+        const arrayOfTfidfResult = [];
         let n = 0;
         documents.forEach(doc => {
             let x = 0;
+            let tfidfResult = new Map();
             doc.forEach(word => {
                 const idfResult = idf(documents, word);
                 const tfResult = tf(doc, word);
                 Promise.all([tfResult, idfResult]).then(values => {
                     tfidfResult.set(word, values[0] * values[1]);
                     x++;
-                    if (x === doc.length)
+                    if (x === doc.length){
+                        arrayOfTfidfResult.push(tfidfResult);
                         n++;
+                    }
                     if (n === documents.length)
-                        console.log(tfidfResult);
+                        console.log(arrayOfTfidfResult);
                 });
             });
         });
