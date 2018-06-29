@@ -91,11 +91,16 @@ function getDocuments() {
 function tfIdf() {
     const promise = getDocuments();
     promise.then(documents => {
-        console.log(documents[0]);
-        const idfResult = idf(documents, "ipsum");
-        const tfResult = tf(documents[0], "ipsum");
-        Promise.all([tfResult, idfResult]).then(values => {
-            console.log(values[0] * values[1]);
+        documents.forEach(doc => {
+            console.log("the document that we are gonna analyze " + doc);
+            doc.forEach(word => {
+                const idfResult = idf(documents, word);
+                const tfResult = tf(doc, word);
+                Promise.all([tfResult, idfResult]).then(values => {
+                    console.log(word + " " + values[0] * values[1]);
+                });
+            });
+            console.log("");
         });
     });
 }
