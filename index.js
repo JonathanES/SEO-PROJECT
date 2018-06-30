@@ -156,6 +156,6 @@ function tfIdf() {
 //tfIdf();
 
 
-checkLanguage("bonjour je suis un chinois");
+checkLanguage("énervé");
 checkLanguage("hello i am from china");
 checkLanguage("Bonjour ma crew of lovely potatoes");

@@ -10,8 +10,10 @@ function checkLanguage(sentence) {
         const letter = word.substring(0, 1);
         fs.readdirSync(`${__dirname}/lemmatization`).forEach(language => {
             const path = `${__dirname}/lemmatization/${language}/${letter}.txt`;
-            const promise = checkWordLanguage(path, word, language);
-            promises.push(promise);
+            if (fs.existsSync(path)){
+                const promise = checkWordLanguage(path, word, language);
+                promises.push(promise);
+            }
         })
     });
     Promise.all(promises).then(values => {
