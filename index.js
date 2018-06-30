@@ -1,5 +1,6 @@
 const fs = require('fs');
 const {checkLanguage} = require('./language');
+const {createDictionnary} = require('./dictionnary');
 const stdin = process.openStdin();
 
 function generateNgrams(N, words) {
@@ -155,7 +156,5 @@ function tfIdf() {
 }
 //tfIdf();
 
-
-checkLanguage("énervé");
-checkLanguage("hello i am from china");
-checkLanguage("Bonjour ma crew of lovely potatoes");
+// createDictionnary("de", "lemmatization-de.txt");
+checkLanguage("ich bin ein kartoffeln");
