@@ -1,1 +1,18 @@
-Son nom est célébré par le bocage qui frémit, et par le ruisseau qui murmure, les vents l’emportent jusqu’à l’arc céleste, l’arc de grâce et de consolation que sa main tendit dans les nuages.
+Google propose une fonction au sein de son service Street View depuis ce mercredi 23 avril, qui
+permet de remonter dans le passé pour visualiser des anciennes photos. On peut ainsi voir les
+changements qui ont été effectués depuis 2007, date de lancement du service Street View. Il suffit
+de disposer de la plus récente version de Google Maps pour pouvoir visualiser les changements.
+Cliquez ensuite sur l’icône en forme d’horloge située en haut à gauche de l’application si d’anciennes
+photos sont disponibles et visualisez le résultat. On peut ainsi voir les modifications apportées à des
+bâtiments, des routes mais également les saisons et malheureusement les catastrophes naturelles
+comme l’exemple ci-dessous.
+Ouragan Sandy New York après le passage et après la reconstruction
+Ouragan Sandy New York: Après le passage et après la reconstruction (source: Google)
+Il est ainsi possible de voir les transformations au fil du temps et des saisons. L’application avait été
+lancée aux Etats-Unis en 2007 et en Europe en 2008. On dispose donc de photos relativement
+anciennes, de 6 à 7 ans environ. Google indique avoir mis en place une « capsule temporelle »
+numérique permettant de voyager dans le temps. Il est ainsi possible de voir l’évolution de la
+construction du stade de la Coupe du monde 2014 à Fortaleza au Brésil ou la construction de la
+Tour de la Liberté aux USA. Google a publié une vidéo montrant certains lieux emblématiques.
+Cette nouvelle fonction n’est actuellement réservée qu’aux ordinateurs dotés de la dernière version
+de Google Maps. Elle sera probablement développée sur terminaux mobiles prochainement.

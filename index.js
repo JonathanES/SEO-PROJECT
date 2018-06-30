@@ -56,7 +56,7 @@ function idf(docs, term) {
             count++;
         });
         if (count === docs.length)
-            resolve(Math.log10((docs.length / n)));
+            resolve(Math.log10((docs.length / n)) + 1);
     });
 }
 
@@ -66,7 +66,7 @@ function readInput() {
         stdin.addListener("data", function (d) {
             const val = parseInt(d.toString().trim());
             console.log("you entered: [" +
-            d.toString().trim() + "] which is in number " + val);
+                d.toString().trim() + "] which is in number " + val);
             if (val) {
                 resolve(val);
                 stdin.pause();
@@ -86,10 +86,11 @@ function getDocuments(input) {
                 if (err) throw err;
                 // const N = [1, 2, 3, 4, 5]
                 const N = [input];
-                data = (data).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()@?+'’]/g, " ");
+                data = (data).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()@?+'’»«]/g, " ");
                 data = (data).replace(/\s{2,}/g, " ");
+                data = data.toLowerCase();
                 let words = data.split(" ");
-                words = words.filter(elt => elt.length > 0)
+                words = words.filter(elt => elt.length > 2)
                 N.forEach(element => {
                     const promise = generateNgrams(element, words);
                     promise.then(ngramList => {
@@ -100,6 +101,25 @@ function getDocuments(input) {
                 });
             });
         });
+    });
+}
+
+function findKeyWords(array) {
+    const keywords = [];
+    let n = 1;
+    array.forEach(element => {
+        let elementArray = [];
+        element.forEach((value, key) => {
+            elementArray.push({name: key, value: value})
+          }
+        );   
+        const sorted = elementArray.sort(function(a, b) {
+            return b.value - a.value;
+          });
+        for (let i = 0; i < 5; i++)     
+            console.log(sorted[i]);
+        console.log(n);
+        n++;
     });
 }
 
@@ -124,7 +144,8 @@ function tfIdf() {
                             n++;
                         }
                         if (n === documents.length)
-                            console.log(arrayOfTfidfResult);
+                            findKeyWords(arrayOfTfidfResult);
+                        //console.log(arrayOfTfidfResult);
                     });
                 });
             });

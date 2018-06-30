@@ -1,1 +1,15 @@
-Ah ! le beau temps de mes travaux poétiques ! les beaux jours que j’ai passés près de toi ! Les premiers, inépuisables de joie, de paix et de liberté ; les derniers, empreints d’une mélancolie qui eut bien aussi ses charmes.
+C'est une sympathique fonctionnalité qu'inaugure Google pour Google Maps. En s'appuyant sur
+son imagerie Street View qui propose des vues à 360° au niveau du sol, Google propose de
+remonter le temps.
+Street-View-Freedom-TowerPlutôt bien vu de tirer ainsi parti de la colossale base de données
+Street View et pour laquelle on apprend par la même occasion que Google conserve les clichés
+remontant jusqu'en 2007, soit la date de lancement aux États-Unis.
+À travers les années, certains lieux ont eu droit à plusieurs passages des véhicules Street View.
+C'est ce qui permet aujourd'hui d'effectuer ce voyage dans le temps. Une telle fonctionnalité avait
+en tout cas fait l'objet de demandes fréquentes d'utilisateurs de Google Maps.
+Le cas échéant, soit lorsque d'anciennes photos sont disponibles, elle prend aujourd'hui la forme
+d'une horloge qui apparaît dans la partie supérieure gauche d'une image Street View. Un curseur
+permet d'affiner le voyage dans la nouvelle dimension temporelle.
+Cette fonctionnalité est accessible avec le nouveau Google Maps sur l'ordinateur et pas pour les
+applications mobiles. Tout le monde ne sera pas immédiatement servi. Le déploiement est en
+cours. En attendant d'être concerné, la vidéo ci-dessous fait les présentations :
