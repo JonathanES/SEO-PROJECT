@@ -154,3 +154,57 @@ function tfIdf() {
 }
 tfIdf();
 
+function sortFile(language) {
+    var readline = require('readline'),
+        instream = fs.createReadStream(`${__dirname}/lemmatization-fr.txt`),
+        outstream = new (require('stream'))(),
+        rl = readline.createInterface(instream, outstream);
+    let counter = 0;
+    rl.on('line', line => {
+        console.log(`Processing element nb: ${counter}`);
+        counter++;
+        let letter = line.substring(0, 1);
+        fs.appendFile(`${__dirname}/lemmatization/${language}/${letter}.txt`, `${line}\r\n`, function (err) {
+            console.log(err);
+        })
+    });
+    rl.on('close', function (line) {
+        console.log(line);
+        console.log('done reading file.');
+    });
+}
+
+function checkLanguage() {
+    const arr = ["bonjour", "jambon", "bean", "mister"]
+    arr.forEach(elt => {
+        const word = elt.toLowerCase();
+        let letter = word.substring(0, 1);
+        let queries = [];
+        fs.readdirSync(`${__dirname}/lemmatization`).forEach(language => {
+            const path = `${__dirname}/lemmatization/${language}/${letter}.txt`;
+            queries.push(checkLanguageInFile(path, word, language));
+            Promise.all(queries).then(values => {
+                console.log(`Language : ${values}`);
+            });
+        })
+    });
+}
+
+function checkLanguageInFile(path, str, language) {
+    return new Promise((resolve, reject) => {
+        var readline = require('readline'),
+            instream = fs.createReadStream(path),
+            outstream = new (require('stream'))(),
+            rl = readline.createInterface(instream, outstream);
+        rl.on('line', line => {
+            let arr = line.match(/\S+/g);
+            if (arr[0] === str || arr[1] === str) {
+                rl.close();
+                resolve(language);
+                console.log(language);
+            }
+        });
+        // rl.on('close', function (line) {
+        // });
+    })
+}
