@@ -5,23 +5,29 @@ const stream = require('stream');
 function checkLanguage(sentence) {
     const arr = sentence.match(/\S+/g);
     let promises = [];
-    arr.forEach(elt => {
-        const word = elt.toLowerCase();
-        const letter = word.substring(0, 1);
-        fs.readdirSync(`${__dirname}/lemmatization`).forEach(language => {
-            const path = `${__dirname}/lemmatization/${language}/${letter}.txt`;
-            if (fs.existsSync(path)){
-                const promise = checkWordLanguage(path, word, language);
-                promises.push(promise);
+    if (arr){
+        arr.forEach(elt => {
+            const word = elt.toLowerCase();
+            const letter = word.substring(0, 1);
+            fs.readdirSync(`${__dirname}/lemmatization`).forEach(language => {
+                const path = `${__dirname}/lemmatization/${language}/${letter}.txt`;
+                if (fs.existsSync(path)){
+                    const promise = checkWordLanguage(path, word, language);
+                    promises.push(promise);
+                }
+            })
+        });
+        Promise.all(promises).then(values => {
+            const langArray = Object.entries(createLangObject(values))
+                                    .map(([key, value]) => ({key,value}))
+            if (langArray.length > 0){
+                const language = langArray.reduce((prev, current) => prev.value > current.value ? prev : current);
+                console.log(`Detected language: ${language.key}`);
             }
-        })
-    });
-    Promise.all(promises).then(values => {
-        const language = Object.entries(createLangObject(values))
-                                .map(([key, value]) => ({key,value}))
-                                .reduce((prev, current) => prev.value > current.value ? prev : current);
-        console.log(`Detected language: ${language.key}`);
-    });
+            else
+                console.log("Please check your spelling");
+        });
+    }
 }
 
 function createLangObject(values){
