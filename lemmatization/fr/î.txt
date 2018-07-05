@@ -1,6 +1,0 @@
-île	îles
-îlien	îlienne
-îlien	îliens
-îlien	îliennes
-îlot	îlots
-îlotage	îlotages
