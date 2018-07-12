@@ -1,6 +1,6 @@
 const fs = require('fs');
-const {detectLanguage} = require('./languageDetector');
-const {loadLanguages} = require('./language');
+const { detectLanguage } = require('./languageDetector');
+const { loadLanguages } = require('./language');
 
 const languages = loadLanguages();
 const stdin = process.openStdin();
@@ -66,7 +66,7 @@ function idf(docs, term) {
 
 function readInput() {
     return new Promise((resolve, reject) => {
-        console.log("Please enter a value for the n-grams (value between 1 and 5) : ")
+        console.log("Please enter a value for the n-grams (value between 1 and 5) : ");
         stdin.addListener("data", function (d) {
             const val = parseInt(d.toString().trim());
             console.log("you entered: [" +
@@ -88,11 +88,13 @@ function getDocuments(input) {
         files.forEach(element => {
             fs.readFile(__dirname + '/files/' + element, "utf8", (err, data) => {
                 if (err) throw err;
-                // const N = [1, 2, 3, 4, 5]
                 const N = [input];
                 data = (data).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()@?+'’»«]/g, " ");
                 data = (data).replace(/\s{2,}/g, " ");
                 data = data.toLowerCase();
+                console.log(element);
+                detectLanguage(data, languages);
+                console.log();
                 let words = data.split(" ");
                 words = words.filter(elt => elt.length > 2)
                 N.forEach(element => {
@@ -114,14 +116,18 @@ function findKeyWords(array) {
     array.forEach(element => {
         let elementArray = [];
         element.forEach((value, key) => {
-            elementArray.push({name: key, value: value})
-          }
-        );   
-        const sorted = elementArray.sort(function(a, b) {
+            elementArray.push({ name: key, value: value })
+        }
+        );
+        const sorted = elementArray.sort(function (a, b) {
             return b.value - a.value;
-          });
-        for (let i = 0; i < 5; i++)     
-            console.log(sorted[i]);
+        });
+        if (sorted.length > 5)
+            for (let i = 0; i < 5; i++)
+                console.log(sorted[i]);
+        else
+            for (let i = 0; i < sorted.length; i++)
+                console.log(sorted[i]);
         console.log(n);
         n++;
     });
@@ -198,4 +204,4 @@ function tfIdf() {
 // detectLanguage(bigGerman, languages);
 // detectLanguage(bigJapan, languages);
 
-//tfIdf();
+tfIdf();
