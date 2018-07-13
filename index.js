@@ -52,8 +52,8 @@ function idf(docs, term) {
         let n = 0;
         let count = 0;
         docs.forEach(doc => {
-            for (word in doc)
-                if (term === doc[word]) {
+            for (word in doc.ngram)
+                if (term === doc.ngram[word]) {
                     n++;
                     break;
                 }
@@ -85,14 +85,14 @@ function getDocuments(input) {
     return new Promise((resolve, reject) => {
         const files = fs.readdirSync(__dirname + '/files');
         const documents = [];
-        files.forEach(element => {
-            fs.readFile(__dirname + '/files/' + element, "utf8", (err, data) => {
+        files.forEach(name => {
+            fs.readFile(__dirname + '/files/' + name, "utf8", (err, data) => {
                 if (err) throw err;
                 const N = [input];
                 data = (data).replace(/[.,\/#!$%\^&\*;:{}=\-_`~()@?+'’»«]/g, " ");
                 data = (data).replace(/\s{2,}/g, " ");
                 data = data.toLowerCase();
-                console.log(element);
+                console.log(name);
                 detectLanguage(data, languages);
                 console.log();
                 let words = data.split(" ");
@@ -100,7 +100,10 @@ function getDocuments(input) {
                 N.forEach(element => {
                     const promise = generateNgrams(element, words);
                     promise.then(ngramList => {
-                        documents.push(ngramList);
+                        documents.push({
+                            name: __dirname + '/files/' + name,
+                            ngram: ngramList
+                        });
                         if (files.length === documents.length)
                             resolve(documents);
                     })
@@ -110,7 +113,7 @@ function getDocuments(input) {
     });
 }
 
-function findKeyWords(array) {
+function findKeyWords(array, documents) {
     const keywords = [];
     let n = 1;
     array.forEach(element => {
@@ -122,14 +125,16 @@ function findKeyWords(array) {
         const sorted = elementArray.sort(function (a, b) {
             return b.value - a.value;
         });
+
+        console.log(documents[n-1].name)
         if (sorted.length > 5)
             for (let i = 0; i < 5; i++)
                 console.log(sorted[i]);
         else
             for (let i = 0; i < sorted.length; i++)
                 console.log(sorted[i]);
-        console.log(n);
         n++;
+        console.log()
     });
 }
 
@@ -140,22 +145,22 @@ function tfIdf() {
         promise.then(documents => {
             const arrayOfTfidfResult = [];
             let n = 0;
-            documents.forEach(doc => {
+            documents.forEach(ngObj => {
                 let x = 0;
                 let tfidfResult = new Map();
-                doc.forEach(word => {
+                ngObj.ngram.forEach(word => {
                     const idfResult = idf(documents, word);
-                    const tfResult = tf(doc, word);
+                    const tfResult = tf(ngObj.ngram, word);
                     Promise.all([tfResult, idfResult]).then(values => {
                         tfidfResult.set(word, values[0] * values[1]);
                         x++;
-                        if (x === doc.length) {
+                        if (x === ngObj.ngram.length) {
                             arrayOfTfidfResult.push(tfidfResult);
                             n++;
                         }
+
                         if (n === documents.length)
-                            findKeyWords(arrayOfTfidfResult);
-                        console.log(arrayOfTfidfResult);
+                            findKeyWords(arrayOfTfidfResult, documents);
                     });
                 });
             });
