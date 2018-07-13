@@ -155,7 +155,7 @@ function tfIdf() {
                         }
                         if (n === documents.length)
                             findKeyWords(arrayOfTfidfResult);
-                        //console.log(arrayOfTfidfResult);
+                        console.log(arrayOfTfidfResult);
                     });
                 });
             });
