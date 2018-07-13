@@ -97,6 +97,7 @@ function getDocuments(input) {
                 console.log();
                 let words = data.split(" ");
                 words = words.filter(elt => elt.length > 2)
+
                 N.forEach(element => {
                     const promise = generateNgrams(element, words);
                     promise.then(ngramList => {
@@ -118,7 +119,7 @@ function findKeyWords(array, documents) {
     let n = 1;
     array.forEach(element => {
         let elementArray = [];
-        element.forEach((value, key) => {
+        element.result.forEach((value, key) => {
             elementArray.push({ name: key, value: value })
         }
         );
@@ -126,7 +127,7 @@ function findKeyWords(array, documents) {
             return b.value - a.value;
         });
 
-        console.log(documents[n-1].name)
+        console.log(element.name)
         if (sorted.length > 5)
             for (let i = 0; i < 5; i++)
                 console.log(sorted[i]);
@@ -148,19 +149,26 @@ function tfIdf() {
             documents.forEach(ngObj => {
                 let x = 0;
                 let tfidfResult = new Map();
+                if (ngObj.ngram.length === 0) {
+                    console.log(`${ngObj.name}: Ngramme trop grand`)
+                    n++;
+                }
+
                 ngObj.ngram.forEach(word => {
                     const idfResult = idf(documents, word);
                     const tfResult = tf(ngObj.ngram, word);
                     Promise.all([tfResult, idfResult]).then(values => {
                         tfidfResult.set(word, values[0] * values[1]);
-                        x++;
-                        if (x === ngObj.ngram.length) {
-                            arrayOfTfidfResult.push(tfidfResult);
+                        if (++x === ngObj.ngram.length) {
+                            arrayOfTfidfResult.push({
+                                name: ngObj.name,
+                                result: tfidfResult
+                            });
                             n++;
                         }
 
                         if (n === documents.length)
-                            findKeyWords(arrayOfTfidfResult, documents);
+                            findKeyWords(arrayOfTfidfResult);
                     });
                 });
             });
